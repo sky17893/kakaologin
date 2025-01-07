@@ -31,7 +31,7 @@ app.get("/user/kakaoLogin", async (req, res) => {
 
   // CODE 값이 없으면 카카오 로그인 페이지로 리디렉션
   if (!code) {
-    const redirectUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`;
+    const redirectUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
     return res.redirect(redirectUrl);
   }
 
@@ -67,7 +67,7 @@ app.get("/user/kakaoLogin", async (req, res) => {
     );
 
     // 사용자 정보를 메인 페이지로 전달 (쿼리 파라미터로 전달)
-    res.redirect(`https://kakaologin.vercel.app/?userInfo=${encodeURIComponent(JSON.stringify(userInfoResponse.data))}`);
+    res.redirect(`https://kakaologin.vercel.app/user/kakaoLogin?code=${encodeURIComponent(code)}`);
   } catch (error) {
     console.error("카카오 로그인 에러:", error);
     res.status(500).json({ error: "카카오 로그인 중 오류가 발생했습니다." });
