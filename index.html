@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>카카오 로그인 성공</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    h1 {
+      color: #333;
+    }
+    .user-info {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    .user-info p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>카카오 로그인 성공</h1>
+
+  <!-- 사용자 정보가 있으면 여기에서 표시됩니다. -->
+  <div id="user-info" class="user-info" style="display: none;">
+    <h2>사용자 정보</h2>
+    <p><strong>이름:</strong> <span id="nickname"></span></p>
+    <p><strong>이메일:</strong> <span id="email"></span></p>
+    <p><strong>아이디:</strong> <span id="user-id"></span></p>
+  </div>
+
+  <!-- 사용자 정보를 불러오는 데 실패한 경우 표시할 곳 -->
+  <p id="error-message" style="display: none;">사용자 정보를 불러오는 데 실패했습니다.</p>
+
+  <button id="logoutBtn" style="display: none;" onclick="logout()">카카오 로그아웃</button>
+
+  <script>
+    // 카카오 SDK 로딩 후 초기화
+    window.onload = function() {
+      // 카카오 SDK 초기화
+      Kakao.init('801961078f740f25dd2e067e7ba20b6e'); // 카카오 앱의 JavaScript 키
+
+      // URL에서 userInfo를 쿼리 파라미터로 받음
+      const urlParams = new URLSearchParams(window.location.search);
+      const userInfo = urlParams.has('userInfo') ? JSON.parse(decodeURIComponent(urlParams.get("userInfo"))) : null;
+
+      // 사용자 정보가 존재하면 화면에 표시
+      if (userInfo) {
+        document.getElementById("user-info").style.display = "block";
+        document.getElementById("nickname").textContent = userInfo.properties.nickname;
+        document.getElementById("email").textContent = userInfo.kakao_account.email;
+        document.getElementById("user-id").textContent = userInfo.id;
+
+        // 카카오 로그아웃 버튼 표시
+        document.getElementById("logoutBtn").style.display = "inline-block";
+      } else {
+        document.getElementById("error-message").style.display = "block";
+      }
+    }
+
+    // 카카오 로그아웃 함수
+    function logout() {
+      Kakao.Auth.logout(function() {
+        alert('로그아웃 되었습니다.');
+        // 로그아웃 후 특정 URL로 리디렉션
+        window.location.href = 'https://hongbo.iwinv.net/'; // 로그아웃 후 돌아갈 페이지
+      });
+    }
+  </script>
+
+  <!-- 카카오 SDK 로딩 -->
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.1.0/kakao.min.js"></script>
+
+</body>
+</html>
