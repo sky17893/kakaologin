@@ -24,7 +24,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // 카카오 로그인 라우터
 app.get("/user/kakaoLogin", async (req, res) => {
   const REST_API_KEY = "801961078f740f25dd2e067e7ba20b6e"; // 카카오 개발자 사이트에서 받은 REST API 키
-  const REDIRECT_URI = "https://kakaologin.vercel.app/user/kakaoLogin"; // Vercel 링크로 리다이렉트 URI 변경
+  const REDIRECT_URI = "/user/kakaoLogin"; // Vercel 링크로 리다이렉트 URI 변경
 
   // 카카오 로그인 시, 쿼리스트링으로 전달되는 CODE 값(인가 코드)
   const code = req.query.code;
